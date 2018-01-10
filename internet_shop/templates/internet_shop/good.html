@@ -1,0 +1,24 @@
+{% extends 'internet_shop/_base.html' %}
+{% load static %}
+
+{% block menu %}
+    {% for category in categories %}
+        <a href="{% url 'category' category_name=category.url_name %}">{{ category.name }}</a>
+
+        {% empty %}
+
+        No Categories
+
+    {% endfor %}
+{% endblock %}
+
+
+{% block content %}
+    {{ good_data.name }}<br>
+    {{ good_data.description }}<br>
+    <img src="{% get_media_prefix %}{{ good_data.image }}"/><br>
+    {{ good_data.name }}<br>
+    {{ good_data.name }}<br>
+    {{ good_data.name }}<br>
+    {{ good_data.name }}<br>
+{% endblock %}
