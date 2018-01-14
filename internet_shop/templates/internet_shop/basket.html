@@ -15,8 +15,8 @@
 
 
 {% block content %}
-    {% for good in goods %}
-        <a href="{% url 'good' good_id=good.id %}">{{ good.name }}</a><br>
+     {% for item in basket_items %}
+        <a href="{% url 'good' good_id=item.good.id %}">{{ item.good.name }} ({{ item.color }}, {{ item.size }}) x{{ item.count_of }}<br></a>
 
         {% empty %}
 

@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from internet_shop.views import IndexView, CategoryView, GoodView
+from internet_shop.views import IndexView, CategoryView, GoodView, BasketView, AddGood
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,7 +28,9 @@ urlpatterns = [
     # OUR:
     url(r'^$', IndexView, name='home'),
     url(r'catalog/(?P<category_name>\w+)/$', CategoryView, name="category"),
-    url(r'good/(?P<good_id>\w+)/$', GoodView, name="good")
+    url(r'basket/$', BasketView, name="basket_view"),
+    url(r'addtobasket/(?P<item_id>\d+)/$', AddGood, name="basket_add"),
+    url(r'good/(?P<good_id>\w+)/$', GoodView, name="good"),
 ]
 
 if settings.DEBUG == True:
