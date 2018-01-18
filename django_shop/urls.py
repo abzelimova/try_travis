@@ -13,32 +13,39 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 
 
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import routers
 
-from internet_shop.views import IndexView, CategoryView, GoodView, BasketView, AddGood
+from internet_shop.views import  GoodAPIView, BasketAPIView, OrderAPIView, ShopAPIView
+from rest_framework_jwt.views import obtain_jwt_token
+
+router = routers.DefaultRouter()
+router.register(r'good', GoodAPIView, base_name='good')
+router.register(r'cart', BasketAPIView, base_name='cart')
+router.register(r'order', OrderAPIView, base_name='order')
+router.register(r'shopAPI', ShopAPIView, base_name='Shop')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    # OUR:
-    url(r'^$', IndexView, name='home'),
-    url(r'catalog/(?P<category_name>\w+)/$', CategoryView, name="category"),
-    url(r'basket/$', BasketView, name="basket_view"),
-    url(r'addtobasket/(?P<item_id>\d+)/$', AddGood, name="basket_add"),
-    url(r'good/(?P<good_id>\w+)/$', GoodView, name="good"),
+
+    # API
+    url(r'^api/v1/', include(router.urls)),
+    # Auth
+    url(r'^auth/', obtain_jwt_token),
 ]
 
-if settings.DEBUG == True:
-    urlpatterns +=static(
+if settings.DEBUG is True:
+    urlpatterns += static(
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,
     )
-    urlpatterns +=static(
+    urlpatterns += static(
         settings.STATIC_URL,
         document_root=settings.STATIC_ROOT,
     )
